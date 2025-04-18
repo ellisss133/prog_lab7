@@ -164,3 +164,39 @@ public class BinaryTree<T> : IEnumerable<T> where T : IComparable<T>
       yield return val;
   }
 }
+
+class Program
+{
+  static void Main()
+  {
+    var tree = new BinaryTree<int>();
+    tree.Add(5);
+    tree.Add(3);
+    tree.Add(7);
+    tree.Add(1);
+    tree.Add(4);
+    tree.Add(6);
+    tree.Add(8);
+
+    Console.WriteLine("Прямой обход через foreach:");
+    foreach (var item in tree)
+      Console.Write(item + " ");
+
+    Console.WriteLine("\nВнешний итератор через лямбду:");
+    foreach (var item in tree.TraverseWith(BinaryTree<int>.CentralTraversal))
+      Console.Write(item + " ");
+
+    Console.WriteLine("\nИтератор руками (Next):");
+    var it = tree.GetIterator();
+    do
+    {
+      Console.Write(it.Current() + " ");
+    } while (it.Next());
+
+    Console.WriteLine("\nИтератор обратно (Previous):");
+    do
+    {
+      Console.Write(it.Current() + " ");
+    } while (it.Previous());
+  }
+}
