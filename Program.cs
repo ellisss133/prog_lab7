@@ -13,15 +13,13 @@ class Program {
     tree.Add(10);
 
     Console.WriteLine("foreach:");
-    foreach (var val in tree) {
+    foreach (var val in tree)
       Console.Write(val + " ");
-    }
 
     Console.WriteLine("\n\nлямбда-итератор:");
     Func<BinaryTree<int>, IEnumerable<int>> lambdaIter = t => t.InOrderTraversal();
-    foreach (var val in lambdaIter(tree)) {
+    foreach (var val in lambdaIter(tree))
       Console.Write(val + " ");
-    }
 
     Console.WriteLine("\n\nручной итератор (вперёд):");
     var it = tree.GetIterator();

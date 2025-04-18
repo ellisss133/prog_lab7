@@ -123,7 +123,6 @@ public class BinaryTree<T> : IEnumerable<T> where T : IComparable<T> {
         current = next;
         return true;
       }
-
       return false;
     }
 
