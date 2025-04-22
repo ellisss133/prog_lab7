@@ -81,40 +81,44 @@ public class BinaryTree<T> : IEnumerable<T> where T : IComparable<T> {
     while (node != null && node.Left != null) {
       node = node.Left;
     }
-
     return node;
   }
 
   public IEnumerable<T> InOrderTraversal() {
     return Traverse(root);
-
     IEnumerable<T> Traverse(TreeNode<T> node) {
-      if (node == null) {
-        yield break;
-      }
-
-      foreach (var n in Traverse(node.Left)) {
-        yield return n;
-      }
-
+      if (node == null) yield break;
+      foreach (var n in Traverse(node.Left)) yield return n;
       yield return node.Data;
+      foreach (var n in Traverse(node.Right)) yield return n;
+    }
+  }
 
-      foreach (var n in Traverse(node.Right)) {
-        yield return n;
-      }
+  public IEnumerable<T> PreOrderTraversal() {
+    return Traverse(root);
+    IEnumerable<T> Traverse(TreeNode<T> node) {
+      if (node == null) yield break;
+      yield return node.Data;
+      foreach (var n in Traverse(node.Left)) yield return n;
+      foreach (var n in Traverse(node.Right)) yield return n;
+    }
+  }
+
+  public IEnumerable<T> PostOrderTraversal() {
+    return Traverse(root);
+    IEnumerable<T> Traverse(TreeNode<T> node) {
+      if (node == null) yield break;
+      foreach (var n in Traverse(node.Left)) yield return n;
+      foreach (var n in Traverse(node.Right)) yield return n;
+      yield return node.Data;
     }
   }
 
   public class TreeIterator {
     private TreeNode<T> current;
-
     public TreeIterator(TreeNode<T> root) {
       current = root;
-      if (current != null) {
-        while (current.Left != null) {
-          current = current.Left;
-        }
-      }
+      if (current != null) while (current.Left != null) current = current.Left;
     }
 
     public bool Next() {
@@ -132,50 +136,12 @@ public class BinaryTree<T> : IEnumerable<T> where T : IComparable<T> {
         current = prev;
         return true;
       }
-
       return false;
     }
 
-    public T Current() {
-      if (current != null) {
-        return current.Data;
-      }
+    public T Current() => current != null ? current.Data : default;
 
-      return default;
-    }
-
-    private TreeNode<T> FindNext(TreeNode<T> node) {
-      if (node.Right != null) {
-        node = node.Right;
-        while (node.Left != null) {
-          node = node.Left;
-        }
-
-        return node;
-      }
-
-      while (node.Parent != null && node == node.Parent.Right) {
-        node = node.Parent;
-      }
-
-      return node.Parent;
-    }
-
-    private TreeNode<T> FindPrev(TreeNode<T> node) {
-      if (node.Left != null) {
-        node = node.Left;
-        while (node.Right != null) {
-          node = node.Right;
-        }
-
-        return node;
-      }
-
-      while (node.Parent != null && node == node.Parent.Left) {
-        node = node.Parent;
-      }
-
-      return node.Parent;
-    }
+    private TreeNode<T> FindNext(TreeNode<T> node) => new BinaryTree<T>().Next(node);
+    private TreeNode<T> FindPrev(TreeNode<T> node) => new BinaryTree<T>().Previous(node);
   }
 }
